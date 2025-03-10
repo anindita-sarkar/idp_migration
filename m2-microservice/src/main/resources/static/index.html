@@ -74,7 +74,7 @@
         console.log('loadUserInfo() called');
 
         try {
-            const response = await fetch('/api/user');
+            const response = await fetch('http://localhost:8084/api/user');
             console.log('Response received:', response);
 
             if (response.ok) {
