@@ -24,7 +24,7 @@ public class SecurityConfig {
 
     private static final Set<String> ALLOWED_ORIGINS = Set.of(
             "http://localhost:3000",
-            "http://localhost:8081",
+            "http://localhost:8082",
             "http://localhost:8084"
     );
 
@@ -37,8 +37,9 @@ public class SecurityConfig {
                         .pathMatchers("/realms/master/protocol/openid-connect/**").permitAll() // ✅ Allow public Keycloak endpoints
                         .pathMatchers("/realms/master/protocol/saml/descriptor").permitAll() // ✅ Allow public Keycloak endpoints
                         .pathMatchers("/actuator/**").permitAll() // Optional for health checks or monitoring
-                        .pathMatchers("/m1/actuator/**").permitAll() // Optional for health checks or monitoring
-                        .pathMatchers("/m2/actuator/**").permitAll() // Optional for health checks or monitoring
+                        .pathMatchers("/m1/actuator/**").permitAll() // Optional for m1 health checks or monitoring
+                        .pathMatchers("/m2/actuator/**").permitAll() // Optional for m2 health checks or monitoring
+                        .pathMatchers("/m2/api/user").permitAll() // For loading user details.
                         .pathMatchers("/public/**").permitAll()
                         .anyExchange().authenticated()
                 )

@@ -63,7 +63,7 @@
     </div>
 
     <div class="buttons">
-<!--        <a href="/login" id="loginButton" class="btn">Login with SAML</a>-->
+        <!--        <a href="/login" id="loginButton" class="btn">Login with SAML</a>-->
         <a href="/logout" id="logoutButton" class="btn logout">Logout</a>
     </div>
 </div>
@@ -74,7 +74,10 @@
         console.log('loadUserInfo() called');
 
         try {
-            const response = await fetch('http://localhost:8084/api/user');
+            const response = await fetch('http://localhost:8085/m2/api/user', {
+    credentials: 'include' // ✅ Allow sending cookies with cross-origin requests
+});
+
             console.log('Response received:', response);
 
             if (response.ok) {
