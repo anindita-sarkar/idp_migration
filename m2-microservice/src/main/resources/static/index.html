@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: inline-block;
+        }
+        h1 {
+            color: #333;
+        }
+        .buttons {
+            margin-top: 20px;
+        }
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 10px;
+            font-size: 16px;
+            color: white;
+            background: #007BFF;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .btn.logout {
+            background: #dc3545;
+        }
+        .btn:hover {
+            opacity: 0.8;
+        }
+        #userInfo {
+            margin-top: 20px;
+            padding: 10px;
+            background: #e9ecef;
+            border-radius: 4px;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Welcome to Our Application</h1>
+    <p id="message">Please log in to continue.</p>
+
+    <div id="userInfo" style="display: none;">
+        <p><strong>Username:</strong> <span id="username"></span></p>
+        <p><strong>Email:</strong> <span id="email"></span></p>
+    </div>
+
+    <div class="buttons">
+<!--        <a href="/login" id="loginButton" class="btn">Login with SAML</a>-->
+        <a href="/logout" id="logoutButton" class="btn logout">Logout</a>
+    </div>
+</div>
+
+<script>
+    // Check for active session and load user info
+    async function loadUserInfo() {
+        console.log('loadUserInfo() called');
+
+        try {
+            const response = await fetch('/api/user');
+            console.log('Response received:', response);
+
+            if (response.ok) {
+                const user = await response.json();
+                console.log('User info:', user);
+
+                if (user.name) {
+                    document.getElementById("message").innerText = `You are logged in as ${user.name}`;
+                    document.getElementById("username").innerText = user.name;
+                    document.getElementById("email").innerText = user.attributes.email || "N/A"; // Adjust attribute key based on SAML config
+                    document.getElementById("userInfo").style.display = "block";
+                    document.getElementById("loginButton").style.display = "none";
+                    document.getElementById("logoutButton").style.display = "inline-block";
+                }
+            } else {
+                console.log('Response not OK:', response.status);
+            }
+        } catch (error) {
+            console.error('Error loading user info:', error);
+        }
+    }
+
+    window.onload = loadUserInfo;
+</script>
+
+</body>
+</html>
